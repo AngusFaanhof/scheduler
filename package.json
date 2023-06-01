@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "puppeteer": "^20.5.0"
+  },
+  "imports": {
+    "#root/*": {
+      "default": "./*"
+    }
+  }
+}
