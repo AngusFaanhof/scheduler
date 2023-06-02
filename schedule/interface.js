@@ -23,7 +23,10 @@ class Schedule {
 		const currentDate = startDate;
 		while (currentDate <= endDate) {
 			const key = currentDate.toISOString().split('T')[0];
-			data[key] = this.data[key];
+
+			if (this.data[key])
+				data[key] = this.data[key];
+
 			currentDate.setDate(currentDate.getDate() + 1);
 		}
 

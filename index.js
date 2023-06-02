@@ -29,8 +29,9 @@ scheduleApp.get('/day', (req, res) => {
 	const date = new Date(timestamp);
 	const data = scheduleInterface.getDay(date);
 
-	// return view of data
-	res.json(data);
+	res.render('schedule/index', {
+		"scheduleData": data
+	});
 });
 
 scheduleApp.get('/week', (req, res) => {
@@ -46,7 +47,9 @@ scheduleApp.get('/week', (req, res) => {
 
 	const data = scheduleInterface.getRange(startDate, endDate);
 
-	res.json(data);
+	res.render('schedule/index', {
+		"scheduleData": data
+	});
 });
 
 scheduleApp.get('/month', (req, res) => {
@@ -62,7 +65,9 @@ scheduleApp.get('/month', (req, res) => {
 
 	const data = scheduleInterface.getRange(startDate, endDate);
 
-	res.json(data);
+	res.render('schedule/index', {
+		"scheduleData": data
+	});
 });
 
 app.get('/', (req, res) => {
