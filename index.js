@@ -9,11 +9,14 @@ const scheduleApp = express();
 const scheduleInterface = new ScheduleInterface();
 const transportInterface = new TransportInterface();
 
+app.set('view engine', 'ejs');
+
 scheduleApp.get('/', (req, res) => {
 	const scheduleData = scheduleInterface.getAll();
 
-	// return view of all data
-	res.json(scheduleData);
+	res.render('schedule/index', {
+		"scheduleData": scheduleData
+	});
 });
 
 scheduleApp.get('/day', (req, res) => {

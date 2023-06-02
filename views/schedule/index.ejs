@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<style>
+		table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 1rem;
+            background-color: transparent;
+            color: #212529;
+            font-size: 0.9rem;
+            text-align: left;
+            line-height: 1.5;
+        }
+
+        th, td {
+            padding: 0.75rem;
+            vertical-align: top;
+            border-top: 1px solid #dee2e6;
+        }
+
+        th {
+            background-color: #e9ecef;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+	</style>
+</head>
+<body>
+	<h2>Schedule</h2>
+	<div>
+		<% Object.keys(scheduleData).forEach(function(day) { %>
+			<h3> <%= day %></h3>
+			<div>
+				<table>
+					<tr>
+						<th>description</th>
+						<th>type</th>
+						<th>start</th>
+						<th>end</th>
+						<th>locations</th>
+						<th>teachers</th>
+					</tr>
+
+					<% scheduleData[day].forEach(function(event) { %>
+						<tr>
+							<td>
+								<%= event.description %>
+							</td>
+							<td>
+								<%= event.type %>
+							</td>
+							<td>
+								<%= event.start %>
+							</td>
+							<td>
+								<%= event.end %>
+							</td>
+							<td>
+								<% event.locations.forEach(function(location) { %>
+									<%= location %>,
+								<% }); %>
+							</td>
+							<td>
+								<% event.teachers.forEach(function(teacher) { %>
+									<%= teacher %>
+								<% }); %>
+							</td>
+					<% }); %>
+				</table>
+			</div>
+			</li>
+		<% }); %>
+	</div>
+		</body>
+</html>
