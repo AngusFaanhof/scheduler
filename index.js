@@ -11,6 +11,12 @@ const transportInterface = new TransportInterface();
 
 app.set('view engine', 'ejs');
 
+function simpleLogger(req, res, next) {
+	console.log(`${req.method} ${req.url}`);
+	console.log(`\t${JSON.stringify(req.query)}`)
+	next();
+}
+
 scheduleApp.get('/', (req, res) => {
 	const scheduleData = scheduleInterface.getAll();
 
@@ -92,6 +98,7 @@ app.get('/today', async (req, res) => {
 });
 
 app.use('/schedule', scheduleApp);
+app.use(simpleLogger);
 
 app.listen(3000, () => {
 	  console.log('App listening on port http://localhost:3000');
