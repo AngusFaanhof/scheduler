@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        font-size: 14px;
+        line-height: 1.5;
+        margin: 0;
+        padding: 0;
+      }
+
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-weight: 600;
+        margin: 0;
+      }
+
+      .container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 20px;
+      }
+
+      .day {
+        display: flex;
+        flex-direction: column;
+        border-right: 1px solid #ddd;
+        padding-right: 20px;
+        margin-right: 20px;
+      }
+
+      .day:last-child {
+        border-right: none;
+        padding-right: 0;
+        margin-right: 0;
+      }
+
+      .day-header {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .day-header h2 {
+        font-size: 24px;
+        margin-right: 10px;
+      }
+
+      .day-overview {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        border-top: 1px solid #ddd;
+        padding-top: 10px;
+        margin-top: 10px;
+      }
+
+      .day-event {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .day-event span {
+        margin-right: 10px;
+      }
+	  .day-event h3 {
+		margin-right: 10px;
+	  }
+
+      .day-event .event-title {
+        font-weight: 600;
+        color: #1a73e8;
+      }
+
+      .day-event .event-time {
+        color: #70757a;
+      }
+
+      @media (max-width: 768px) {
+        .day {
+          border-right: none;
+          padding-right: 0;
+          margin-right: 0;
+          margin-bottom: 20px;
+        }
+
+        .day-header h2 {
+          font-size: 20px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+	</div>
+
+    <script>
+	const data = {
+        "2022-09-05": [
+          {
+            description: "Object-Oriented and Functional Programming (HC)",
+            courseCode: "XB_0019",
+            start: "2022-09-05T11:00:00.000Z",
+            end: "2022-09-05T12:45:00.000Z",
+            duration: "1:45",
+            type: "Hoorcollege",
+            teachers: ["Ploeg, A.J. van der"],
+            locations: ["WN-Q105(208/52T)"],
+            online: false,
+          },
+          {
+            description: "Data Structures and Algorithms (HC)",
+            courseCode: "X_400614",
+            start: "2022-09-05T13:30:00.000Z",
+            end: "2022-09-05T15:15:00.000Z",
+            duration: "1:45",
+            type: "Hoorcollege",
+            teachers: ["Massacci, F", " Tuma, K."],
+            locations: ["MF-FG1(343/85T)"],
+            online: false,
+          },
+        ],
+        "2022-09-06": [
+          {
+            description: "Object-Oriented and Functional Programming (PR)",
+            courseCode: "XB_0019",
+            start: "2022-09-06T09:00:00.000Z",
+            end: "2022-09-06T10:45:00.000Z",
+            duration: "1:45",
+            type: "Practicum",
+            teachers: ["Ploeg, A.J. van der"],
+            locations: [
+              "MF-BK37 (28Comp)",
+              " MF-BK43 (76Comp)",
+              " MF-BK50 (34Comp/30DT)",
+            ],
+            online: false,
+          },
+        ],
+        "2022-09-07": [
+          {
+            description: "Data Structures and Algorithms (WC)",
+            courseCode: "X_400614",
+            start: "2022-09-07T11:00:00.000Z",
+            end: "2022-09-07T12:45:00.000Z",
+            duration: "1:45",
+            type: "Werkcollege",
+            teachers: ["Massacci, F", " Tuma, K."],
+            locations: [
+              "WN-C659(40/20T)",
+              " WN-M607 (50/25T)",
+              " WN-M623(50/25T)",
+              " WN-M639(50/25T)",
+            ],
+            online: false,
+          },
+        ],
+        "2022-09-08": [
+          {
+            description: "Object-Oriented and Functional Programming (HC)",
+            courseCode: "XB_0019",
+            start: "2022-09-08T09:00:00.000Z",
+            end: "2022-09-08T10:45:00.000Z",
+            duration: "1:45",
+            type: "Hoorcollege",
+            teachers: ["Ploeg, A.J. van der"],
+            locations: ["WN-KC159(168/42T)"],
+            online: false,
+          },
+          {
+            description: "Object-Oriented and Functional Programming (PR)",
+            courseCode: "XB_0019",
+            start: "2022-09-08T11:00:00.000Z",
+            end: "2022-09-08T12:45:00.000Z",
+            duration: "1:45",
+            type: "Practicum",
+            teachers: ["Ploeg, A.J. van der"],
+            locations: [
+              "MF-BK37 (28Comp)",
+              " MF-BK43 (76Comp)",
+              " MF-BK50 (34Comp/30DT)",
+            ],
+            online: false,
+          },
+          {
+            description: "Data Structures and Algorithms (HC)",
+            courseCode: "X_400614",
+            start: "2022-09-08T13:30:00.000Z",
+            end: "2022-09-08T15:15:00.000Z",
+            duration: "1:45",
+            type: "Hoorcollege",
+            teachers: ["Massacci, F", " Tuma, K."],
+            locations: ["HG-KC07(330/82T)"],
+            online: false,
+          },
+        ],
+        "2022-09-12": [
+          {
+            description: "Object-Oriented and Functional Programming (HC)",
+            courseCode: "XB_0019",
+            start: "2022-09-12T11:00:00.000Z",
+            end: "2022-09-12T12:45:00.000Z",
+            duration: "1:45",
+            type: "Hoorcollege",
+            teachers: ["Ploeg, A.J. van der"],
+            locations: ["WN-Q105(208/52T)"],
+            online: false,
+          },
+          {
+            description: "Data Structures and Algorithms (HC)",
+            courseCode: "X_400614",
+            start: "2022-09-12T13:30:00.000Z",
+            end: "2022-09-12T15:15:00.000Z",
+            duration: "1:45",
+            type: "Hoorcollege",
+            teachers: ["Massacci, F", " Tuma, K."],
+            locations: ["MF-FG1(343/85T)"],
+            online: false,
+          },
+        ],
+        "2022-09-13": [
+          {
+            description: "Object-Oriented and Functional Programming (PR)",
+            courseCode: "XB_0019",
+            start: "2022-09-13T09:00:00.000Z",
+            end: "2022-09-13T10:45:00.000Z",
+            duration: "1:45",
+            type: "Practicum",
+            teachers: ["Ploeg, A.J. van der"],
+            locations: [
+              "MF-BK37 (28Comp)",
+              " MF-BK43 (76Comp)",
+              " MF-BK50 (34Comp/30DT)",
+            ],
+            online: false,
+          },
+        ],
+        "2022-09-14": [
+          {
+            description: "Data Structures and Algorithms (WC)",
+            courseCode: "X_400614",
+            start: "2022-09-14T11:00:00.000Z",
+            end: "2022-09-14T12:45:00.000Z",
+            duration: "1:45",
+            type: "Werkcollege",
+            teachers: ["Massacci, F", " Tuma, K."],
+            locations: [
+              "WN-C659(40/20T)",
+              " WN-M607 (50/25T)",
+              " WN-M623(50/25T)",
+              " WN-M639(50/25T)",
+            ],
+            online: false,
+          },
+        ],
+        "2022-09-15": [
+          {
+            description: "Object-Oriented and Functional Programming (HC)",
+            courseCode: "XB_0019",
+            start: "2022-09-15T09:00:00.000Z",
+            end: "2022-09-15T10:45:00.000Z",
+            duration: "1:45",
+            type: "Hoorcollege",
+            teachers: ["Ploeg, A.J. van der"],
+            locations: ["WN-KC159(168/42T)"],
+            online: false,
+          },
+          {
+            description: "Object-Oriented and Functional Programming (PR)",
+            courseCode: "XB_0019",
+            start: "2022-09-15T11:00:00.000Z",
+            end: "2022-09-15T12:45:00.000Z",
+            duration: "1:45",
+            type: "Practicum",
+            teachers: ["Ploeg, A.J. van der"],
+            locations: [
+              "MF-BK37 (28Comp)",
+              " MF-BK43 (76Comp)",
+              " MF-BK50 (34Comp/30DT)",
+            ],
+            online: false,
+          },
+          {
+            description: "Data Structures and Algorithms (HC)",
+            courseCode: "X_400614",
+            start: "2022-09-15T13:30:00.000Z",
+            end: "2022-09-15T15:15:00.000Z",
+            duration: "1:45",
+            type: "Hoorcollege",
+            teachers: ["Massacci, F", " Tuma, K."],
+            locations: ["HG-KC07(330/82T)"],
+            online: false,
+          },
+        ],
+      };
+
+	const day = data["2022-09-05"];
+
+	const dayContainer = document.querySelector(".container");
+
+	function getEventTime(event) {
+		const start = new Date(event.start);
+		const end = new Date(event.end);
+
+		let startMinutes = start.getMinutes();
+		startMinutes = startMinutes < 10 ? `0${startMinutes}` : startMinutes;
+
+		let endMinutes = end.getMinutes();
+		endMinutes = endMinutes < 10 ? `0${endMinutes}` : endMinutes;
+
+		return `${start.getHours()}:${startMinutes} - ${end.getHours()}:${endMinutes}`;
+	}
+
+	function getDayOfWeek(date) {
+		const dayOfWeek = new Date(date).getDay();
+
+		return ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday",][dayOfWeek];
+	}
+
+	function getDateFormatted(datestring) {
+		const date = new Date(datestring);
+		const monthNumber = date.getMonth();
+		const monthString = ["Januari","Februari","Maart","April","Mei","Juni","Juli","Augustus","September","Oktober","November","December",][monthNumber - 1];
+
+		const day = date.getDate();
+		const year = date.getFullYear();
+
+		return `${day} ${monthString} ${year}`;
+	}
+
+	function getDayHeader(event) {
+		const dayHeader = document.createElement("div");
+		dayHeader.classList.add("day-header");
+
+		const dayHeaderTitle = document.createElement("h2");
+		dayHeaderTitle.innerText = getDayOfWeek(event.start);
+		dayHeader.appendChild(dayHeaderTitle);
+
+		const dayHeaderDate = document.createElement("span");
+		dayHeaderDate.innerText = getDateFormatted(event.start);
+		dayHeader.appendChild(dayHeaderDate);
+
+		return dayHeader;
+	}
+
+	function getEventOverview(event) {
+		const eventElement = document.createElement("div");
+		eventElement.classList.add("day-event");
+
+		// add event title
+		const eventTitle = document.createElement("h3");
+		eventTitle.classList.add("event-title");
+		eventTitle.innerText = event.description;
+		eventElement.appendChild(eventTitle);
+
+		// add event time
+		const eventTime = document.createElement("span");
+		eventTime.classList.add("event-time");
+		eventTime.innerText = getEventTime(event);
+		eventElement.appendChild(eventTime);
+
+		return eventElement;
+	}
+
+	function addDayOverview(dayEvents) {
+		const dayOverview = document.createElement("div");
+		dayOverview.classList.add("day-overview");
+
+		// add day header
+		const dayHeader = getDayHeader(dayEvents[0]);
+
+		// add events
+		const dayEventsContainer = document.createElement("div");
+		dayEventsContainer.classList.add("day-events");
+
+		dayEvents.forEach((event) => {
+			dayEventsContainer.appendChild(
+				getEventOverview(event)
+			);
+		});
+
+		dayOverview.appendChild(dayHeader);
+		dayOverview.appendChild(dayEventsContainer);
+		dayContainer.appendChild(dayOverview);
+	}
+
+	for (const day in data) {
+		addDayOverview(data[day]);
+	}
+	</script>
+  </body>
+</html>
