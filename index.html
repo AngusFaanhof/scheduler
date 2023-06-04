@@ -97,10 +97,89 @@
           font-size: 20px;
         }
       }
+
+	  .popup {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.popup-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+  position: relative;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover,
+.close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
     </style>
   </head>
   <body>
     <div class="container">
+		<div class="popup">
+			<div class="popup-content">
+				<span class="close">&times;</span>
+				<table class="event-table">
+				  <tr>
+					<th>Description:</th>
+					<td class="event-description"></td>
+				  </tr>
+				  <tr>
+					<th>Code:</th>
+					<td class="event-code"></td>
+				  </tr>
+				  <tr>
+					<th>Start Time:</th>
+					<td class="event-start-time"></td>
+				  </tr>
+				  <tr>
+					<th>End Time:</th>
+					<td class="event-end-time"></td>
+				  </tr>
+				  <tr>
+					<th>Duration:</th>
+					<td class="event-duration"></td>
+				  </tr>
+				  <tr>
+					<th>Type:</th>
+					<td class="event-type"></td>
+				  </tr>
+				  <tr>
+					<th>Teachers:</th>
+					<td class="event-teachers"></td>
+				  </tr>
+				  <tr>
+					<th>Locations:</th>
+					<td class="event-locations"></td>
+				  </tr>
+				  <tr>
+					<th>Online:</th>
+					<td class="event-online"></td>
+				  </tr>
+				</table>
+			  </div>
+		</div>
 	</div>
 
     <script>
@@ -305,6 +384,45 @@
 
 	const day = data["2022-09-05"];
 
+	const popup = document.querySelector('.popup');
+	const popupContent = document.querySelector('.popup-content');
+	const closeBtn = document.querySelector('.close');
+
+	const eventDescription = document.querySelector('.event-description');
+	const eventCode = document.querySelector('.event-code');
+	const eventStartTime = document.querySelector('.event-start-time');
+	const eventEndTime = document.querySelector('.event-end-time');
+	const eventDuration = document.querySelector('.event-duration');
+	const eventType = document.querySelector('.event-type');
+	const eventTeachers = document.querySelector('.event-teachers');
+	const eventLocations = document.querySelector('.event-locations');
+	const eventOnline = document.querySelector('.event-online');
+
+	function showPopup(event) {
+		eventDescription.innerText = event.description;
+		eventCode.innerText = event.courseCode;
+		eventStartTime.innerText = event.start;
+		eventEndTime.innerText = event.end;
+		eventDuration.innerText = event.duration;
+		eventType.innerText = event.type;
+		eventTeachers.innerText = event.teachers.join(', ');
+		eventLocations.innerText = event.locations.join(', ');
+		eventOnline.innerText = event.online ? 'Online' : 'Offline';
+
+		popup.style.display = 'block';
+	}
+
+	function hidePopup() {
+		popup.style.display = 'none';
+	}
+
+	closeBtn.addEventListener('click', hidePopup);
+
+	// add event listener to close pupup when clicking outside of it
+	window.addEventListener('click', function(event) {
+		if (event.target == popup) hidePopup();
+	});
+
 	const dayContainer = document.querySelector(".container");
 
 	function getEventTime(event) {
@@ -329,12 +447,12 @@
 	function getDateFormatted(datestring) {
 		const date = new Date(datestring);
 		const monthNumber = date.getMonth();
-		const monthString = ["Januari","Februari","Maart","April","Mei","Juni","Juli","Augustus","September","Oktober","November","December",][monthNumber - 1];
+		const monthString = ["Januari", "Februari", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December",][monthNumber - 1];
 
 		const day = date.getDate();
 		const year = date.getFullYear();
 
-		return `${day} ${monthString} ${year}`;
+		return `${monthString} ${day}, ${year}`;
 	}
 
 	function getDayHeader(event) {
@@ -350,6 +468,13 @@
 		dayHeader.appendChild(dayHeaderDate);
 
 		return dayHeader;
+	}
+
+	function getEventDataFromElement(element) {
+		const date = element.parentElement.parentElement.getAttribute('data-date');
+		const eventIndex = Array.from(element.parentElement.children).indexOf(element);
+
+		return data[date][eventIndex];
 	}
 
 	function getEventOverview(event) {
@@ -368,12 +493,18 @@
 		eventTime.innerText = getEventTime(event);
 		eventElement.appendChild(eventTime);
 
+		// add onclick event to open popup
+		eventElement.addEventListener('click', () => {
+			showPopup(event);
+		});
+
 		return eventElement;
 	}
 
-	function addDayOverview(dayEvents) {
+	function addDayOverview(dayEvents, day) {
 		const dayOverview = document.createElement("div");
 		dayOverview.classList.add("day-overview");
+		dayOverview.setAttribute("data-date", day);
 
 		// add day header
 		const dayHeader = getDayHeader(dayEvents[0]);
@@ -394,8 +525,17 @@
 	}
 
 	for (const day in data) {
-		addDayOverview(data[day]);
+		addDayOverview(data[day], day);
 	}
+
+
+
+
+
+
+	// example
+	// const event = day[0];
+	// showPopup(event);
 	</script>
   </body>
 </html>
