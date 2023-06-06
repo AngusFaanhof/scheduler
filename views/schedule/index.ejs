@@ -5,78 +5,262 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Document</title>
 	<style>
-		table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-bottom: 1rem;
-            background-color: transparent;
-            color: #212529;
-            font-size: 0.9rem;
-            text-align: left;
-            line-height: 1.5;
-        }
+		body {
+				font-family: Arial, sans-serif;
+				font-size: 14px;
+				line-height: 1.5;
+				margin: 0;
+				padding: 0;
+			}
 
-        th, td {
-            padding: 0.75rem;
-            vertical-align: top;
-            border-top: 1px solid #dee2e6;
-        }
+			h1,
+			h2,
+			h3,
+			h4,
+			h5,
+			h6 {
+				font-weight: 600;
+				margin: 0;
+			}
 
-        th {
-            background-color: #e9ecef;
-            border-bottom: 2px solid #dee2e6;
-        }
+			#schedule-container {
+				max-width: 1200px;
+				margin: 0 auto;
+				padding: 0 20px;
+			}
 
-        tr:nth-child(even) {
-            background-color: #f8f9fa;
-        }
+			.day-overview {
+				display: flex;
+				flex-direction: column;
+				border-right: 1px solid #ddd;
+				padding-right: 20px;
+				margin-right: 20px;
+			}
+
+			.day-overview:last-child {
+				border-right: none;
+				padding-right: 0;
+				margin-right: 0;
+			}
+
+			.day-header {
+				display: flex;
+				align-items: center;
+				margin-bottom: 10px;
+			}
+
+			.day-header h2 {
+				font-size: 24px;
+				margin-right: 10px;
+			}
+
+			.day-overview {
+				display: flex;
+				flex-direction: column;
+				flex-grow: 1;
+				border-top: 1px solid #ddd;
+				padding-top: 10px;
+				margin-top: 10px;
+			}
+
+			.event {
+				display: flex;
+				align-items: center;
+				margin-bottom: 10px;
+			}
+
+			.event span {
+				margin-right: 10px;
+			}
+			.event h3 {
+				margin-right: 10px;
+			}
+
+			.event .event-title {
+				font-weight: 600;
+				color: #1a73e8;
+			}
+
+			.event .event-time {
+				color: #70757a;
+			}
+
+			#popup {
+				display: none;
+				position: fixed;
+				z-index: 1;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				overflow: auto;
+				background-color: rgba(0, 0, 0, 0.4);
+			}
+
+			#popup-content {
+				background-color: #fefefe;
+				margin: 10% auto;
+				padding: 20px;
+				border: 1px solid #888;
+				width: 80%;
+				max-width: 600px;
+				position: relative;
+			}
+
+			.close {
+				color: #aaa;
+				float: right;
+				font-size: 28px;
+				font-weight: bold;
+			}
+
+			.close:hover,
+			.close:focus {
+				color: black;
+				text-decoration: none;
+				cursor: pointer;
+			}
+
+			#popup-button {
+				position: absolute;
+				bottom: 10px;
+				right: 10px;
+				padding: 10px;
+				background-color: #4CAF50;
+				color: white;
+				border: none;
+				border-radius: 5px;
+				cursor: pointer;
+			}
+
+			#popup-button:hover {
+				background-color: #3e8e41;
+			}
 	</style>
 </head>
 <body>
-	<h2>Schedule</h2>
-	<div>
-		<% Object.keys(scheduleData).forEach(function(day) { %>
-			<h3> <%= day %></h3>
-			<div>
-				<table>
-					<tr>
-						<th>description</th>
-						<th>type</th>
-						<th>start</th>
-						<th>end</th>
-						<th>locations</th>
-						<th>teachers</th>
-					</tr>
+	<div id="popup">
+		<div id="popup-content">
+			<button class="close" onclick="hidePopup">&times;</button>
+			<table class="event-table">
+				<tr>
+					<th>Description:</th>
+					<td class="event-description"></td>
+				</tr>
+				<tr>
+					<th>Code:</th>
+					<td class="event-code"></td>
+				</tr>
+				<tr>
+					<th>Start Time:</th>
+					<td class="event-start-time"></td>
+				</tr>
+				<tr>
+					<th>End Time:</th>
+					<td class="event-end-time"></td>
+				</tr>
+				<tr>
+					<th>Duration:</th>
+					<td class="event-duration"></td>
+				</tr>
+				<tr>
+					<th>Type:</th>
+					<td class="event-type"></td>
+				</tr>
+				<tr>
+					<th>Teachers:</th>
+					<td class="event-teachers"></td>
+				</tr>
+				<tr>
+					<th>Locations:</th>
+					<td class="event-locations"></td>
+				</tr>
+				<tr>
+					<th>Online:</th>
+					<td class="event-online"></td>
+				</tr>
+			</table>
+			<button id="popup-button" onclick="hidePopup">Get travel info</button>
+		</div>
+	</div>
 
+	<div id="schedule-container">
+		<% Object.keys(scheduleData).forEach(function(day) { %>
+			<div class="day-overview" date="<%= day %>">
+				<div class="day-header">
+					<h2><%= helpers.getDayOfWeek(scheduleData[day][0].start) %></h2>
+					<span><%= helpers.getDateFormatted(scheduleData[day][0].start) %></span>
+				</div>
+
+				<div class="day-events">
 					<% scheduleData[day].forEach(function(event) { %>
-						<tr>
-							<td>
+						<div class="event">
+							<h3 class="event-title">
 								<%= event.description %>
-							</td>
-							<td>
-								<%= event.type %>
-							</td>
-							<td>
-								<%= event.start %>
-							</td>
-							<td>
-								<%= event.end %>
-							</td>
-							<td>
-								<% event.locations.forEach(function(location) { %>
-									<%= location %>,
-								<% }); %>
-							</td>
-							<td>
-								<% event.teachers.forEach(function(teacher) { %>
-									<%= teacher %>
-								<% }); %>
-							</td>
-					<% }); %>
-				</table>
+							</h3>
+							<span class="event-time">
+								<%= helpers.getEventTime(event) %>
+							</span>
+						</div>
+					<% }) %>
+				</div>
 			</div>
-			</li>
 		<% }); %>
 	</div>
-		</body>
+
+	<script>
+		const scheduleData = JSON.parse('<%- JSON.stringify(scheduleData) %>');
+
+		const popup = document.querySelector("#popup");
+		const popupContent = document.querySelector(".popup-content");
+		const closeBtn = document.querySelector(".close");
+
+		const eventDescription = document.querySelector(".event-description");
+		const eventCode = document.querySelector(".event-code");
+		const eventStartTime = document.querySelector(".event-start-time");
+		const eventEndTime = document.querySelector(".event-end-time");
+		const eventDuration = document.querySelector(".event-duration");
+		const eventType = document.querySelector(".event-type");
+		const eventTeachers = document.querySelector(".event-teachers");
+		const eventLocations = document.querySelector(".event-locations");
+		const eventOnline = document.querySelector(".event-online");
+
+		function getEventDataFromElement(element) {
+			const date = element.parentElement.parentElement.parentElement.getAttribute("date");
+			const eventIndex = Array.from(element.parentElement.children).indexOf(element);
+
+			return scheduleData[date][eventIndex];
+		}
+
+		function showPopup(e) {
+			const event = getEventDataFromElement(e);
+			eventDescription.innerText = event.description;
+			eventCode.innerText = event.courseCode;
+			eventStartTime.innerText = event.start;
+			eventEndTime.innerText = event.end;
+			eventDuration.innerText = event.duration;
+			eventType.innerText = event.type;
+			eventTeachers.innerText = event.teachers.join(", ");
+			eventLocations.innerText = event.locations.join(", ");
+			eventOnline.innerText = event.online ? "Online" : "Offline";
+
+			popup.style.display = "block";
+		}
+
+		function hidePopup() {
+			console.log("hide");
+			popup.style.display = "none";
+		}
+
+		window.addEventListener("click", function (event) {
+			if (event.target == popup) hidePopup();
+		});
+
+		document.querySelectorAll(".event").forEach(function (event) {
+			event.addEventListener("click", function (e) {
+				showPopup(e.target);
+			});
+		});
+	</script>
+</body>
 </html>
