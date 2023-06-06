@@ -2,6 +2,7 @@ const express = require('express');
 
 const ScheduleInterface = require('./schedule/interface');
 const TransportInterface = require('./transport/interface');
+const helpers = require('./helpers');
 const config = require('./config.json');
 
 const app = express();
@@ -21,7 +22,8 @@ scheduleApp.get('/', (req, res) => {
 	const scheduleData = scheduleInterface.getAll();
 
 	res.render('schedule/index', {
-		"scheduleData": scheduleData
+		"scheduleData": scheduleData,
+		"helpers": helpers
 	});
 });
 
@@ -36,7 +38,8 @@ scheduleApp.get('/day', (req, res) => {
 	const data = scheduleInterface.getDay(date);
 
 	res.render('schedule/index', {
-		"scheduleData": data
+		"scheduleData": data,
+		"helpers": helpers
 	});
 });
 
@@ -54,7 +57,8 @@ scheduleApp.get('/week', (req, res) => {
 	const data = scheduleInterface.getRange(startDate, endDate);
 
 	res.render('schedule/index', {
-		"scheduleData": data
+		"scheduleData": data,
+		"helpers": helpers
 	});
 });
 
@@ -72,7 +76,8 @@ scheduleApp.get('/month', (req, res) => {
 	const data = scheduleInterface.getRange(startDate, endDate);
 
 	res.render('schedule/index', {
-		"scheduleData": data
+		"scheduleData": data,
+		"helpers": helpers
 	});
 });
 
