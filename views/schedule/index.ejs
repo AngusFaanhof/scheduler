@@ -121,7 +121,7 @@
 				cursor: pointer;
 			}
 
-			#popup-button {
+			#travel-info {
 				position: absolute;
 				bottom: 10px;
 				right: 10px;
@@ -133,7 +133,7 @@
 				cursor: pointer;
 			}
 
-			#popup-button:hover {
+			#travel-info:hover {
 				background-color: #3e8e41;
 			}
 	</style>
@@ -141,7 +141,7 @@
 <body>
 	<div id="popup">
 		<div id="popup-content">
-			<button class="close" onclick="hidePopup">&times;</button>
+			<span class="close">&times;</span>
 			<table class="event-table">
 				<tr>
 					<th>Description:</th>
@@ -180,7 +180,7 @@
 					<td class="event-online"></td>
 				</tr>
 			</table>
-			<button id="popup-button" onclick="hidePopup">Get travel info</button>
+			<button id="travel-info">Get travel info</button>
 		</div>
 	</div>
 
@@ -213,7 +213,7 @@
 
 		const popup = document.querySelector("#popup");
 		const popupContent = document.querySelector(".popup-content");
-		const closeBtn = document.querySelector(".close");
+		// const closeBtn = document.querySelector(".close");
 
 		const eventDescription = document.querySelector(".event-description");
 		const eventCode = document.querySelector(".event-code");
@@ -225,15 +225,20 @@
 		const eventLocations = document.querySelector(".event-locations");
 		const eventOnline = document.querySelector(".event-online");
 
+		let event;
+
 		function getEventDataFromElement(element) {
 			const date = element.parentElement.parentElement.parentElement.getAttribute("date");
 			const eventIndex = Array.from(element.parentElement.children).indexOf(element);
 
-			return scheduleData[date][eventIndex];
+			console.log(date, eventIndex);
+
+			event = scheduleData[date][eventIndex];
 		}
 
 		function showPopup(e) {
-			const event = getEventDataFromElement(e);
+			console.log(e);
+			getEventDataFromElement(e);
 			eventDescription.innerText = event.description;
 			eventCode.innerText = event.courseCode;
 			eventStartTime.innerText = event.start;
@@ -251,6 +256,15 @@
 			console.log("hide");
 			popup.style.display = "none";
 		}
+
+		const closeBtn = document.querySelector(".close");
+		closeBtn.addEventListener("click", hidePopup);
+
+		const travelInfoBtn = document.querySelector("#travel-info");
+		travelInfoBtn.addEventListener("click", function () {
+			const url = `http://localhost:3000/date?date=${event.start}`;
+			window.open(url, "_blank");
+		});
 
 		window.addEventListener("click", function (event) {
 			if (event.target == popup) hidePopup();
