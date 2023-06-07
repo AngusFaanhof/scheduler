@@ -102,8 +102,30 @@ app.get('/today', async (req, res) => {
 	res.json(transportData);
 });
 
+app.get('/date', async (req, res) => {
+	const date = new Date(req.query.date); // adds 2 hours...
+
+	if (isNaN(date.getTime()))
+		return res.send('Invalid date');
+
+	const scheduleData = scheduleInterface.getDay(date);
+
+	if (Object.keys(scheduleData).length === 0)
+		return res.send('No data for this date');
+
+	const startTime = new Date(scheduleData[0].start);
+	const transportData = await transportInterface.getRoute(
+		config.from,
+		config.to,
+		startTime,
+		config.bufferTime
+	);
+
+	res.json(transportData);
+});
+
 app.use('/schedule', scheduleApp);
-app.use(simpleLogger);
+// app.use(simpleLogger);
 
 app.listen(3000, () => {
 	  console.log('App listening on port http://localhost:3000');
