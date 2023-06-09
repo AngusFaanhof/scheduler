@@ -5,10 +5,12 @@ const TransportInterface = require('./transport/interface');
 const helpers = require('./helpers');
 const config = require('./config.json');
 
-const app = express();
-const scheduleApp = express();
 const scheduleInterface = new ScheduleInterface();
 const transportInterface = new TransportInterface();
+
+const app = express();
+const scheduleApp = express();
+const overview = express();
 
 app.set('view engine', 'ejs');
 
@@ -85,7 +87,7 @@ app.get('/', (req, res) => {
 	res.send('Welcome to the scheduler app!');
 });
 
-app.get('/today', async (req, res) => {
+overview.get('/today', async (req, res) => {
 	const scheduleData = scheduleInterface.getDay(new Date());
 
 	if (Object.keys(scheduleData).length === 0)
@@ -102,7 +104,7 @@ app.get('/today', async (req, res) => {
 	res.json(transportData);
 });
 
-app.get('/date', async (req, res) => {
+overview.get('/date', async (req, res) => {
 	const date = new Date(req.query.date); // adds 2 hours...
 
 	if (isNaN(date.getTime()))
@@ -125,6 +127,7 @@ app.get('/date', async (req, res) => {
 });
 
 app.use('/schedule', scheduleApp);
+app.use('/overview', overview);
 // app.use(simpleLogger);
 
 app.listen(3000, () => {
